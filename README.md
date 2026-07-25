@@ -2,9 +2,11 @@
 
 An open-source ESP32-S3 based air quality and environmental monitor, built for workshops where 3D printing, soldering, and other fume-producing work happens in an enclosed space.
 
-WEM continuously measures CO2, TVOC, HCHO (formaldehyde), particulates (PM1.0/2.5/10), temperature, and humidity, displays live readings on a 7" touchscreen, and publishes everything to [Home Assistant](https://www.home-assistant.io/) over MQTT for logging, automation, and alerting.
+WEM is a modular design - fit what you need that continuously measures CO2, TVOC, HCHO (formaldehyde), particulates (PM0.3/0.5/1.0/2.5/10), temperature, and humidity, displays live readings on a 7" touchscreen (if fitted), and publishes everything to [Home Assistant](https://www.home-assistant.io/) (if available) over MQTT for logging, automation, and alerting.
 
-This project exists because 3D printing ABS and soldering in an MDF-lined workshop produces measurable off-gassing and fumes — WEM was built to quantify that, and to benchmark a custom venting system against real data rather than guesswork.
+This project exists because 3D printing ABS and soldering in a workshop produces measurable off-gassing and fumes — WEM was built to quantify that, and to benchmark a custom venting system against real data rather than guesswork.
+
+![WEM 7" touchscreen display showing live sensor gauges](images/display-teaser.png)
 
 ---
 
@@ -30,7 +32,7 @@ If you've found this repo before that happens: watch/star it, or check back soon
 
 WEM uses an **optional-sensor design pattern** — every sensor above can be omitted from a build without editing firmware. Absent sensors are detected automatically at boot and gracefully excluded from the display, alarms, and Home Assistant publishing. This means you can build a lower-cost version of WEM with only the sensors that matter to you.
 
-Readings are shown on a 7" 800×480 SSD1963 TFT touchscreen with live gauges, and published to Home Assistant via [ArduinoHA](https://github.com/dawidchyrzynski/arduino-home-assistant) over MQTT.
+Readings are shown on a 7" 800×480 SSD1963 TFT touchscreen (if fitted) with live gauges, and published to Home Assistant via [ArduinoHA](https://github.com/dawidchyrzynski/arduino-home-assistant) over MQTT.
 
 ---
 
