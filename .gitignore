@@ -6,7 +6,7 @@
 # special meaning to git at all.
 
 ###############################################################################
-# WEM-specific — credentials
+# WEM-specific — credentials & documents
 ###############################################################################
 # Real credentials — never commit. Share secrets.h.example instead.
 secrets.h
@@ -14,6 +14,7 @@ secrets.h
 secrets.*.h
 secrets.h.bak
 *.secrets.h
+RELEASE_PROCEDURE.md
 
 ###############################################################################
 # WEM-specific — Arduino / Visual Micro build artefacts
