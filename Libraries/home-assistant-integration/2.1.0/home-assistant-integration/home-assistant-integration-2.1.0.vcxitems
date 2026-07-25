@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding ="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+  <PropertyGroup Label="Globals" >
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{32af3b33-7a68-470e-9636-4b0ab0eca5fe}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\HADevice.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\HAMqtt.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HABaseDeviceType.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HABinarySensor.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HAButton.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HACamera.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HACover.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HADeviceTracker.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HADeviceTrigger.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HAFan.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HAHVAC.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HALight.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HALock.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HANumber.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HAScene.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HASelect.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HASensor.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HASensorNumber.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HASwitch.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\device-types\HATagScanner.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\mocks\PubSubClientMock.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\utils\HADictionary.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\utils\HANumeric.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\utils\HASerializer.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\utils\HASerializerArray.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\utils\HAUtils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\ArduinoHA.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\ArduinoHADefines.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\HADevice.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\HAMqtt.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HABaseDeviceType.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HABinarySensor.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HAButton.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HACamera.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HACover.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HADeviceTracker.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HADeviceTrigger.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HAFan.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HAHVAC.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HALight.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HALock.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HANumber.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HAScene.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HASelect.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HASensor.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HASensorNumber.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HASwitch.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\device-types\HATagScanner.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\mocks\AUnitHelpers.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\mocks\PubSubClientMock.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\utils\HADictionary.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\utils\HANumeric.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\utils\HASerializer.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\utils\HASerializerArray.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\utils\HAUtils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)library.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)CHANGELOG.md" />
+<None Include="$(MSBuildThisFileDirectory)LICENSE" />
+<None Include="$(MSBuildThisFileDirectory)README.md" />
+  </ItemGroup>
+</Project>

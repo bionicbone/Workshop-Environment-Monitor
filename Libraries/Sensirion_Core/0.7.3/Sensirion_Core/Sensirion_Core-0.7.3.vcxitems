@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding ="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+  <PropertyGroup Label="Globals" >
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{5cd3d841-b3fc-4815-b302-9f3981200b1a}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\SensirionCrc.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\SensirionErrors.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\SensirionI2CCommunication.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\SensirionI2CTxFrame.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\SensirionRxFrame.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\SensirionShdlcCommunication.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\SensirionShdlcTxFrame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionCore.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionCoreArduinoLibrary.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionCrc.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionErrors.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionI2CCommunication.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionI2CRxFrame.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionI2CTxFrame.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionRxFrame.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionShdlcCommunication.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionShdlcRxFrame.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\SensirionShdlcTxFrame.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)keywords.txt" />
+<Text Include="$(MSBuildThisFileDirectory)library.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)CHANGELOG.rst" />
+<None Include="$(MSBuildThisFileDirectory)LICENSE" />
+<None Include="$(MSBuildThisFileDirectory)README.md" />
+  </ItemGroup>
+</Project>

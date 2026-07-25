@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding ="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+  <PropertyGroup Label="Globals" >
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{4f7766e5-e66e-40e3-a856-cf27a908813c}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Adafruit_AQIUtils.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\Adafruit_PM25AQI.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\Adafruit_PM25AQI_I2C.cpp" />
+<ClCompile Include="$(MSBuildThisFileDirectory)src\Adafruit_PM25AQI_UART.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Adafruit_AQIUtils.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\Adafruit_PM25AQI.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\Adafruit_PM25AQI_I2C.h" />
+<ClInclude Include="$(MSBuildThisFileDirectory)src\Adafruit_PM25AQI_UART.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)library.properties" />
+<Text Include="$(MSBuildThisFileDirectory)license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)code-of-conduct.md" />
+<None Include="$(MSBuildThisFileDirectory)README.md" />
+  </ItemGroup>
+</Project>
