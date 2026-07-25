@@ -1,0 +1,115 @@
+# Workshop Environmental Monitor — git ignore
+#
+# IMPORTANT: this file must be named EXACTLY ".gitignore" (leading dot, no
+# other extension) at the repo root. Git will silently ignore a file named
+# anything else, including "gitignore" with no dot — that filename has no
+# special meaning to git at all.
+
+###############################################################################
+# WEM-specific — credentials
+###############################################################################
+# Real credentials — never commit. Share secrets.h.example instead.
+secrets.h
+# Safety net: catch any stray/backup copies too.
+secrets.*.h
+secrets.h.bak
+*.secrets.h
+
+###############################################################################
+# WEM-specific — Arduino / Visual Micro build artefacts
+###############################################################################
+/build/
+/.vs/
+/Debug/
+/Release/
+*.bin
+*.elf
+*.map
+
+###############################################################################
+# WEM-specific — OS cruft
+###############################################################################
+.DS_Store
+Thumbs.db
+
+###############################################################################
+# Visual Studio boilerplate (VisualStudio.gitignore, trimmed set relevant to
+# a Visual Micro / Arduino sketch project — see
+# https://github.com/github/gitignore/blob/main/VisualStudio.gitignore for
+# the full upstream list if this project ever grows a .NET/C# component)
+###############################################################################
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Macro folder
+__vm/
+
+# Visual Studio cache/options directory
+.vs/
+
+# Files built by Visual Studio / compiler intermediates
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# Backup & report files
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# Misc editor/OS backup patterns
+~$*
+*~
