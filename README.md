@@ -54,7 +54,7 @@ Readings are shown on a 7" 800×480 SSD1963 TFT touchscreen with live gauges, an
 Gerber files for the WEM main PCB are in [`hardware/`](hardware). To get boards made:
 
 1. Download the Gerber `.zip` from `hardware/`.
-2. Upload it directly to a fab house's quoting page — [JLCPCB](https://jlcpcb.com/), [PCBWay](https://www.pcbway.com/), and similar all accept Gerbers as-is with no extra conversion needed.
+2. Upload it directly to a fab house's quoting page — [JLCPCB](https://jlcpcb.com/).
 3. Default settings (1.6mm thickness, HASL finish, 1oz copper) match what this design was built and tested with; nothing exotic is required.
 
 Breakout-board module links and assembly photos are being put together for a launch video and will be added to `hardware/` shortly after release — see the note in that folder.
