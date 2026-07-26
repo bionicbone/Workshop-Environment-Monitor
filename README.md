@@ -39,12 +39,14 @@ Readings are shown on a 7" 800×480 SSD1963 TFT touchscreen (if fitted) with liv
 ## Repository structure
 
 ```
-├── hardware/            PCB design files (Gerbers), hardware licence, breakout-board
-│                        references (photos/links being added post-launch)
+├── hardware/            PCB design files (Gerbers), hardware README (attribution /
+│                        Source Location notice), breakout-board references
+│                        (photos/links being added post-launch)
 ├── Libraries/           Full vendored copies of every Arduino library WEM depends on,
 │                        exactly as used to build and test this project
 ├── stl for printing/    3D-printable enclosure and sensor mount STL files
-├── LICENSE              Firmware licence (AGPL-3.0-or-later)
+├── LICENSE               Firmware licence (AGPL-3.0-or-later)
+├── LICENSE-hardware.txt  Hardware licence (CERN-OHL-W-2.0)
 ├── THIRD_PARTY_LICENSES.md   Full attribution and licence text for every dependency
 └── secrets.h.example    Template for your own WiFi/MQTT credentials
 ```
@@ -66,7 +68,7 @@ Breakout-board module links and assembly photos are being put together for a lau
 ## Licensing
 
 - **Firmware**: [AGPL-3.0-or-later](LICENSE) — required because WEM links against ArduinoHA, which is itself AGPL-3.0. See [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md) for the full rationale and every dependency's licence.
-- **Hardware (PCB + enclosure)**: [CERN-OHL-W-2.0](hardware/LICENSE-hardware.txt).
+- **Hardware (PCB + enclosure)**: [CERN-OHL-W-2.0](LICENSE-hardware.txt).
 
 Full attribution for every third-party library, with verbatim licence text, is in [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
 
