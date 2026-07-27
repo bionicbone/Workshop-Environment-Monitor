@@ -1,15 +1,18 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
+SPDX-FileCopyrightText: 2026 Kevin Guest (BionicBone)
 
 # Workshop Environment Monitor — User Guide
+
+**Project home:** <https://github.com/bionicbone/Workshop-Environment-Monitor>
 
 This guide covers building confidence in a fresh WEM: first boot, day-to-day
 touchscreen controls, what the hardware looks like under the hood, and what
 to do when something looks wrong. For licensing, third-party attribution, and
-repository structure, see the root [`README.md`](README.md).
+repository structure, see the root [`README.md`](https://github.com/bionicbone/Workshop-Environment-Monitor/blob/main/README.md).
 
-This document describes WEM as built at **v1.0.0**. It does not cover the
-project's development history — see the private Schematic Reference if
-you're curious how a design decision was reached.
+This document describes WEM as built at **v1.0.0**, and covers the device as
+it is — not how it came to be that way. The development history isn't
+published.
 
 ---
 
@@ -27,16 +30,21 @@ you're curious how a design decision was reached.
 
 ### 1.2 What happens on first boot
 
-1. The display initialises and shows the WEM header/gauges.
+1. WEM checks whether a display is fitted. If one is, it initialises and
+   shows the header/gauges. If not, WEM runs headless and publishes to Home
+   Assistant only — see [Running Without a Display](#6-running-without-a-display-headless).
 2. WEM attempts to connect to WiFi (a few retries, then continues in a
    degraded/offline state rather than hanging — it'll pick the connection up
    automatically later if it appears).
 3. If WiFi connects, MQTT and Home Assistant discovery follow, along with
    NTP time sync and OTA readiness.
-4. Each fitted sensor is probed once. A sensor that doesn't answer is marked
-   absent for the rest of the session — its gauge/row greys out permanently
+4. Each sensor is probed, with up to 3 seconds of retries before WEM gives up
+   on it — a slow-to-wake sensor gets a fair chance rather than being written
+   off on one failed attempt. Anything that still doesn't answer is marked
+   absent for the rest of the session: its gauge/row greys out permanently
    rather than freezing on stale data. No firmware changes are needed to run
-   with a subset of sensors.
+   with a subset of sensors. Expect boot to take noticeably longer when
+   sensors are missing — that's the retry windows elapsing, not a fault.
 5. **The SGP30 (TVOC) sensor starts a warm-up period** before it publishes
    real numbers — 12 hours on a genuinely fresh start, or 1 hour if a
    previously-saved baseline was restored from flash. This is normal and
@@ -95,6 +103,11 @@ short of clearing it.
 
 ## 2. Touchscreen Controls
 
+> These controls need a display fitted — the touch sensor lives on the
+> display's own ribbon. If you're running headless, see
+> [Running Without a Display](#6-running-without-a-display-headless) for what
+> you lose and what to do instead.
+
 | Action | Effect |
 |---|---|
 | Short tap | Wakes the display from backlight sleep, or snoozes an active alarm |
@@ -132,9 +145,15 @@ is quick, doesn't touch your WiFi/MQTT settings, and is the only method most
 users will ever need.
 
 **Fallback — full flash erase.** Only necessary if the long-press mechanism
-itself is unavailable (e.g. touchscreen not fitted, or a display fault).
-This wipes *everything* in flash, including your WiFi and MQTT credentials
-— you'll need to reconfigure `secrets.h` and reflash afterwards.
+itself is unavailable — which currently includes every headless build (see
+[Running Without a Display](#6-running-without-a-display-headless)), as well
+as a display fault. This wipes *everything* in flash, including your WiFi and
+MQTT credentials — you'll need to reconfigure `secrets.h` and reflash
+afterwards.
+
+> If you're running headless and this looks like a lot of ceremony just to
+> reset one sensor — agreed. A Home Assistant button for this is the next
+> thing on the list after release.
 
 ---
 
@@ -149,9 +168,13 @@ This wipes *everything* in flash, including your WiFi and MQTT credentials
 | SCD40 | CO2 | I2C (0x62) | 5V | Every 5s | ~every 30s |
 | SHT40 | Temperature / humidity (primary, drives the display) | I2C (0x44) | 5V | Every 5s | ~every 30s |
 | BME280 | Temperature / humidity (secondary, HA-only) | I2C (0x76) | 3.3V | Every 5s | ~every 30s |
-| PMS5003 | Particulates (PM1.0/2.5/10) | UART | 5V | 120s duty cycle (25% on-time) | ~every 120s |
+| PMS5003 | Particulates — 6 count channels + 3 mass concentrations (see 4.2) | UART | 5V | 120s duty cycle (25% on-time) | ~every 120s |
 | LD2410B | mmWave presence (optional) | UART | 5V (3.3V logic) | Continuous | — (local use only) |
 | FT5x06 | Capacitive touch | I2C (0x38) | 3.3V | Continuous | — |
+
+The FT5x06 does double duty: WEM also uses its presence on the I2C bus to work
+out whether a display is fitted at all. See
+[Running Without a Display](#6-running-without-a-display-headless).
 
 Sensor reads happen at the cadence each sensor's own hardware needs; Home
 Assistant publishing is decoupled from that and rate-limited separately, so
@@ -160,7 +183,33 @@ HA doesn't get flooded with near-duplicate values.
 A sensor that isn't fitted is simply skipped — no reads attempted, no
 gauge/entity populated, no crash. See [Optional Sensors](#5-optional-sensors).
 
-### 4.2 I2C bus (Wire1 — SDA on GPIO1, SCL on GPIO4)
+### 4.2 Particulate channels — counts vs mass
+
+The PMS5003 reports particulates two different ways, and WEM publishes both.
+They are not interchangeable and the distinction matters:
+
+| Channel | Unit | What it is |
+|---|---|---|
+| PM0.3 / PM0.5 / PM1.0 / PM2.5 / PM5.0 / PM10 **Count** | cnt/0.1L | How *many* particles of at least that size were counted in a 0.1 litre sample |
+| PM1.0 / PM2.5 / PM10 **Atmospheric** | ug/m3 | Estimated *mass* of particulate matter suspended per cubic metre |
+
+All nine appear on the display's left-hand panel and as separate Home
+Assistant entities.
+
+**Why the small counts matter.** PM0.3 and PM0.5 are the channels worth
+watching for 3D printing. Ultrafine particles emitted while printing are
+numerous but individually almost weightless, so they can be present in very
+large numbers while the mass figures still read near zero — a monitor that
+only reported ug/m3 would tell you the air was fine. The count channels are
+there so it doesn't.
+
+> **Alarms use the mass figures only** — PM2.5 and PM10 in ug/m3, never the
+> counts. The count channels are informational: there's no widely-agreed
+> health threshold to alarm against, and a raw particle count varies far too
+> much with normal workshop activity to make a sensible trigger. See
+> [Alarms and Thresholds](#7-alarms-and-thresholds).
+
+### 4.3 I2C bus (Wire1 — SDA on GPIO1, SCL on GPIO4)
 
 | Address | Device | Sensor |
 |---|---|---|
@@ -170,7 +219,7 @@ gauge/entity populated, no crash. See [Optional Sensors](#5-optional-sensors).
 | 0x62 | SCD40 | CO2 / temp / humidity |
 | 0x76 | BME280 | Temp / humidity / pressure |
 
-### 4.3 UART connections
+### 4.4 UART connections
 
 | Interface | Device | Baud |
 |---|---|---|
@@ -178,7 +227,7 @@ gauge/entity populated, no crash. See [Optional Sensors](#5-optional-sensors).
 | Serial1 | SFA40 (HCHO) | 9600 |
 | Serial2 | PMS5003 (particulates) | 9600 |
 
-### 4.4 GPIO pin map (ESP32-S3)
+### 4.5 GPIO pin map (ESP32-S3)
 
 | GPIO | Function | Notes |
 |---|---|---|
@@ -199,10 +248,13 @@ gauge/entity populated, no crash. See [Optional Sensors](#5-optional-sensors).
 | 47 | Buzzer PWM | Drives alert piezo via transistor |
 | 48 | TFT D/C | Data/command select |
 
-GPIO 19, 20 (USB), 33–37 (PSRAM traces), 43, 44 (USB serial) are reserved by
-the board itself — don't repurpose them if you're modifying the PCB.
+GPIO 19, 20 (USB), 33–34 (PSRAM traces), 43, 44 (USB serial) are reserved by
+the board itself — don't repurpose them if you're modifying the PCB. GPIO
+35–37 sit on PSRAM traces too, but PSRAM is disabled in this build's compiler
+settings, which frees them — hence 35 and 36 appearing in the table above.
+GPIO 9, 11, 12, 13 and 14 are genuinely unallocated if you need a spare.
 
-### 4.5 Power
+### 4.6 Power
 
 | Rail | Source |
 |---|---|
@@ -217,9 +269,9 @@ input is recommended for permanent installs.
 
 ## 5. Optional Sensors
 
-Every sensor in the table above is optional. WEM probes each one once at
-boot; anything not fitted (or not responding) is marked absent for that
-session and cleanly excluded from:
+Every sensor in the table above is optional. WEM probes each one at boot,
+retrying for up to 3 seconds before giving up; anything not fitted (or not
+responding) is marked absent for that session and cleanly excluded from:
 
 - the display (its gauge/row greys out rather than showing stale data),
 - Home Assistant (no entity ever gets pushed for a sensor that never
@@ -229,18 +281,124 @@ session and cleanly excluded from:
 This means you can build a cut-down WEM with only the sensors that matter to
 you — no firmware changes required either way.
 
+**The display is optional on the same terms**, with one difference worth
+knowing about: leaving it off costs you the alarm snooze and the SGP30
+baseline reset, because both are triggered by touch. See
+[Running Without a Display](#6-running-without-a-display-headless).
+
 ---
 
-## 6. Alarms and Thresholds
+## 6. Running Without a Display (Headless)
+
+The 7" touchscreen is optional, just like the sensors. Leave it off and WEM
+runs headless: every sensor is read as normal and everything is published to
+Home Assistant exactly as it would be otherwise. If you already live in the HA
+dashboard, or you're mounting WEM somewhere nobody will look at it, this is a
+perfectly sensible way to build one — and it's cheaper.
+
+No firmware changes or build flags are needed. Just don't connect the display.
+
+### 6.1 How WEM knows
+
+WEM looks for the touch controller on the I2C bus at boot. Found means a
+display is fitted; not found means headless. You'll see one of these in the
+serial log:
+
+```
+TFT: Touch controller found at 0x38 - display fitted
+```
+
+```
+TFT: Touch controller not found at 0x38 - display assumed NOT fitted
+TFT: Running WITHOUT display (Home Assistant only).
+```
+
+This check runs once, at boot. **Connecting a display to a running WEM won't
+do anything until you restart it.**
+
+**One thing to watch:** the display panel itself can't be detected directly —
+there's no electrical path to ask it whether it's there. WEM asks the touch
+controller instead, which shares the display's ribbon cable. So if the touch
+ribbon isn't fully seated, WEM will decide there's no display and leave the
+screen dark, even though the panel is physically connected. **If you've fitted
+a display and the screen stays black, reseat the touch ribbon first** — it's
+by far the most likely cause.
+
+### 6.2 What you give up
+
+Everything you lose comes from the same root: no display means no touchscreen,
+and touch is currently WEM's only input.
+
+| | Headless |
+|---|---|
+| Sensor readings | Full — unchanged |
+| Home Assistant / MQTT | Full — unchanged |
+| OTA firmware updates | Full — unchanged |
+| Audible alarm | Sounds normally — **but cannot be silenced** |
+| Alarm snooze | Not available |
+| SGP30 baseline reset | Not available (flash erase only) |
+| On-screen gauges, backlight | Not applicable |
+
+Two of those deserve spelling out.
+
+**The alarm can't be snoozed.** It will sound its two-beep pattern every few
+seconds for as long as the reading stays over threshold. There's no way to
+silence it from the device. This bites hardest if you also skipped the LD2410B
+presence sensor, because then the alarm isn't gated on someone being in the
+room either — it'll sound whether you're there or not. Two practical options
+in the meantime: fit an LD2410B (cheap, and it gates the alarm on presence),
+or fix the underlying air quality, which is admittedly the point of the device.
+
+**The SGP30 baseline can't be cleared.** The 5-second long-press described in
+[section 3](#3-clearing-the-sgp30-baseline-nvs-reset) needs a touchscreen. On
+a headless unit your only route is a full flash erase and reflash. This mainly
+matters if you ever swap the physical SGP30 chip — see section 3 for why that
+requires a baseline clear.
+
+> **Both of these are known v1.0.0 limitations, not permanent design.**
+> Exposing snooze and baseline reset as Home Assistant buttons is the first
+> thing planned after release — it needs no touchscreen and will work on every
+> build, headless or not. If headless operation matters to you, it's worth
+> watching <https://github.com/bionicbone/Workshop-Environment-Monitor> for that update.
+
+---
+
+## 7. Alarms and Thresholds
 
 WEM raises an audible alarm (piezo buzzer) and a visual warning on the
 display when a reading crosses its threshold. Thresholds are chosen to flag
 "you should probably act on this now", not raw sensor limits:
 
-| Reading | Warning threshold |
-|---|---|
-| TVOC | 1000 ppb |
-| HCHO | 150 ppb |
+| Reading | Alarm threshold | Notes |
+|---|---|---|
+| CO2 | > 2000 ppm | Comfort/ventilation, not toxicity |
+| TVOC | > 1000 ppb | Set so a carbon filter running for ~5 min clears it — acts as a "filter should be on" reminder rather than a nuisance alarm |
+| HCHO (formaldehyde) | > 150 ppb | Raised from 100 ppb to reduce false alarms from human presence |
+| PM2.5 (mass) | > 35 ug/m3 | Atmospheric channel, not the particle count |
+| PM10 (mass) | > 154 ug/m3 | Atmospheric channel, not the particle count |
+
+All five sound the same two-beep pattern — the buzzer tells you *something* is
+over threshold, not which. The display's left-hand status panel shows which
+reading tripped.
+
+**Particle counts never alarm.** Only the PM2.5 and PM10 mass figures do. See
+[Particulate channels](#42-particulate-channels--counts-vs-mass) for why.
+
+**Alarms don't switch off the instant a reading drops.** Two deliberate
+behaviours stop a value hovering near its threshold from producing rapid
+on/off flapping:
+
+- Each hazard latches on at its threshold and only clears once the reading
+  falls to **90% of it** (so TVOC alarms at 1000 ppb and clears below 900).
+- Once triggered, the alarm holds for **at least one full 3-second cycle**,
+  even if the reading drops immediately.
+
+If an alarm seems to linger slightly after the number looks fine, that's this
+working as intended, not a stuck buzzer.
+
+On a display-equipped unit, a tap on the screen snoozes an active alarm for 15
+minutes. On a headless unit there's no way to silence it — see
+[Running Without a Display](#6-running-without-a-display-headless).
 
 A sensor that's gone stale (hasn't reported recently) is excluded from alarm
 logic entirely — WEM won't sound an alarm based on old data, and won't stay
@@ -250,20 +408,30 @@ glance.
 
 ---
 
-## 7. Troubleshooting
+## 8. Troubleshooting
 
 **A sensor's gauge is permanently grey.** That sensor wasn't detected at
-boot — check its wiring/power, then power-cycle the unit (a soft
-reset/reboot alone won't re-probe it).
+boot — check its wiring and power, then restart the unit. Detection only runs
+during startup, so WEM won't notice a reconnected sensor until it reboots.
+Either a soft reset or a full power cycle will re-probe.
 
 **TVOC/eCO2 reads flat or stuck at an implausible value.** Almost always a
 mismatched SGP30 baseline — see [Clearing the SGP30 Baseline](#3-clearing-the-sgp30-baseline-nvs-reset).
+
+**A display is connected but the screen stays dark.** WEM decides whether a
+display is fitted by looking for the touch controller on the I2C bus, so an
+unseated touch ribbon reads as "no display" and the screen never initialises.
+Reseat the touch ribbon and power-cycle. The serial log tells you which way
+WEM decided — look for `TFT: Touch controller ... at 0x38` near the top of the
+boot output. See
+[Running Without a Display](#6-running-without-a-display-headless).
 
 **Touchscreen stops responding entirely.** Rare, and under active
 monitoring. If it happens, a full power cycle (disconnect and reconnect
 power) clears it — a reset button/pulse alone will not, since the touch
 controller has its own separate reset circuit. If you see this, it'd help
-the project to report it (see the repository's issue tracker).
+the project to report it — please open an issue at
+<https://github.com/bionicbone/Workshop-Environment-Monitor/issues>.
 
 **Display readings look plausible but Home Assistant shows nothing for a
 sensor.** Check that WiFi/MQTT actually connected (the header status icons
@@ -272,10 +440,11 @@ almost always a network/broker issue, not a sensor fault.
 
 ---
 
-## 8. Licensing
+## 9. Licensing
 
 WEM firmware is licensed under AGPL-3.0-or-later; hardware (PCB and
 enclosure) under CERN-OHL-W-2.0. This document is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). See the
-root [`README.md`](README.md) and [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md)
+root [`README.md`](https://github.com/bionicbone/Workshop-Environment-Monitor/blob/main/README.md) and
+[`THIRD_PARTY_LICENSES.md`](https://github.com/bionicbone/Workshop-Environment-Monitor/blob/main/THIRD_PARTY_LICENSES.md)
 for full detail.
