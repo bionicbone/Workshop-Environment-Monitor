@@ -8,7 +8,7 @@ SPDX-FileCopyrightText: 2026 Kevin Guest (BionicBone)
 This guide covers building confidence in a fresh WEM: first boot, day-to-day
 touchscreen controls, what the hardware looks like under the hood, and what
 to do when something looks wrong. For licensing, third-party attribution, and
-repository structure, see the root [`README.md`](https://github.com/bionicbone/Workshop-Environment-Monitor/blob/main/README.md).
+repository structure, see `README.md` in the repository root (link above).
 
 This document describes WEM as built at **v1.0.0**, and covers the device as
 it is — not how it came to be that way. The development history isn't
@@ -445,6 +445,5 @@ almost always a network/broker issue, not a sensor fault.
 WEM firmware is licensed under AGPL-3.0-or-later; hardware (PCB and
 enclosure) under CERN-OHL-W-2.0. This document is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). See the
-root [`README.md`](https://github.com/bionicbone/Workshop-Environment-Monitor/blob/main/README.md) and
-[`THIRD_PARTY_LICENSES.md`](https://github.com/bionicbone/Workshop-Environment-Monitor/blob/main/THIRD_PARTY_LICENSES.md)
-for full detail.
+`README.md` and `THIRD_PARTY_LICENSES.md` in the repository root for full
+detail — both are at <https://github.com/bionicbone/Workshop-Environment-Monitor>.
