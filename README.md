@@ -1,3 +1,6 @@
+** COMING VERY SOON, Expected released data is in the 1st week of August **
+** I just need to check the final PCB v1.2 in a live situation ** 
+
 # Workshop Environment Monitor (WEM)
 
 An open-source ESP32-S3 based air quality and environmental monitor, built for workshops where 3D printing, soldering, and other fume-producing work happens in an enclosed space.
