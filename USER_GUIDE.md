@@ -5,10 +5,11 @@ SPDX-FileCopyrightText: 2026 Kevin Guest (BionicBone)
 
 **Project home:** <https://github.com/bionicbone/Workshop-Environment-Monitor>
 
-This guide covers building confidence in a fresh WEM: first boot, day-to-day
-touchscreen controls, what the hardware looks like under the hood, and what
-to do when something looks wrong. For licensing, third-party attribution, and
-repository structure, see `README.md` in the repository root (link above).
+This guide covers getting a fresh WEM running and keeping it that way:
+compiling and flashing the firmware, first boot, day-to-day touchscreen
+controls, what the hardware looks like under the hood, and what to do when
+something looks wrong. For licensing, third-party attribution, and repository
+structure, see `README.md` in the repository root (link above).
 
 This document describes WEM as built at **v1.0.0**, and covers the device as
 it is — not how it came to be that way. The development history isn't
@@ -16,19 +17,129 @@ published.
 
 ---
 
-## 1. First Boot
+## 1. Building, Flashing and First Boot
 
-### 1.1 Before you power on
+### 1.1 Building and flashing the firmware
+
+v1.0.0 is a **compile-it-yourself release** — there's no pre-built binary to
+download. A compiled WEM image has your WiFi and MQTT credentials baked into
+it, so a shared binary would either leak them or be useless to anyone else.
+You build it yourself against your own `secrets.h`. (A way to enter
+credentials on the device at first boot is planned as a fast-follow; once that
+exists, pre-built binaries can be published too.)
+
+**What you need**
+
+- The **Arduino IDE** (1.8.x or 2.x). WEM is developed in Visual Studio with
+  the Visual Micro extension, but it builds unmodified in the standard Arduino
+  IDE, and the settings below map directly onto the Arduino IDE **Tools** menu.
+- The **ESP32 Arduino core** ("esp32" by Espressif Systems), installed through
+  **Boards Manager**. WEM is tested on core **v2.0.17** and **v3.3.10** —
+  either works. On any other version the firmware still runs, but the boot log
+  prints a "core version has not been tested" line.
+- The repository contents: the sketch folder, `secrets.h.example`, and the
+  `Libraries/` folder.
+
+**Step 1 — use the vendored libraries (don't skip this).** The repository's
+`Libraries/` folder holds the exact copies of every library WEM was built and
+tested against. **Use these rather than installing from the Library Manager.**
+Copy each folder from `Libraries/` into your Arduino sketchbook `libraries/`
+directory (usually `Documents/Arduino/libraries/`), replacing any existing
+copy of the same name, then restart the IDE.
+
+This matters most for **TFT_eSPI**, which is pre-configured for WEM's exact
+800×480 SSD1963 panel. The firmware checks this at compile time and stops with
+
+```
+#error "Incorrect TFT_eSPI Display Setup - should be 50"
+```
+
+if it's built against a stock TFT_eSPI. The vendored copy is already set to
+display setup 50, so with it this never fires.
+
+**Step 2 — create your `secrets.h`.** Copy `secrets.h.example` to `secrets.h`
+in the sketch folder and fill in your WiFi SSID and password, and your MQTT
+broker address, port and credentials. `secrets.h` is git-ignored and must
+never be committed — it's the one file holding your credentials, and keeping
+it out of version control is what makes the compile-it-yourself model safe.
+
+**Step 3 — select the board and settings.** Set **Board** to **ESP32S3 Dev
+Module**, then match every option below. These are the exact settings WEM is
+built and tested with.
+
+| Setting | Value |
+|---|---|
+| Upload Speed | 921600 |
+| USB Mode | Hardware CDC and JTAG |
+| USB CDC On Boot | Enabled |
+| USB Firmware MSC On Boot | Disabled |
+| USB DFU On Boot | Disabled |
+| Upload Mode | UART0 / Hardware CDC |
+| CPU Frequency | 240MHz (WiFi) |
+| Flash Mode | QIO 80MHz |
+| Flash Size | 16MB (128Mb) |
+| Partition Scheme | 16M Flash (3MB APP/9.9MB FATFS) |
+| Core Debug Level | None |
+| PSRAM | **Disabled** |
+| Arduino Runs On | Core 1 |
+| Events Run On | Core 1 |
+| Erase All Flash Before Sketch Upload | Disabled |
+| JTAG Adapter | Disabled |
+
+![WEM board settings for the ESP32S3 Dev Module](images/Compiler_Settings.png)
+
+Two of these are not optional:
+
+- **PSRAM must be Disabled.** WEM uses GPIO35 and GPIO36, which on this module
+  sit on the octal-PSRAM bus (see the pin map in 4.5). Enabling PSRAM takes
+  those pins over and the build won't work correctly.
+- **Flash Size 16MB with the 16M (3MB APP / 9.9MB FATFS) partition.** The
+  firmware is built to this layout; a smaller flash size or a different
+  partition scheme can fail to upload or leave no room for the FATFS area.
+
+**USB CDC On Boot: Enabled** is why the serial monitor works over the same
+USB-C cable you flash with — no separate USB-serial adapter needed.
+
+**Step 4 — compile and upload.** Connect the board over USB-C, select its port
+under **Tools → Port**, and click **Upload**. If the board isn't detected or
+the upload won't start, hold the **BOOT** button, tap **RESET** (or re-plug the
+cable), release **BOOT**, and try again — some ESP32-S3 boards need this to
+enter the bootloader for a first flash.
+
+**Step 5 — confirm it's running.** Open the **Serial Monitor at 115200 baud**.
+You should see the boot banner:
+
+```
+Name        : Workshop Environment Monitor
+Program     : v1.0.0
+License     : AGPL-3.0-or-later, NO WARRANTY
+Source      : https://github.com/bionicbone/Workshop-Environment-Monitor
+```
+
+followed by the Arduino core version and a line for each sensor as it's probed
+(for example `SHT40: Found and initialised`, or `SHT40: Sensor not found at
+0x44!` for anything not fitted). A display-fitted unit also logs the touch
+controller at `0x38`. "This ESP32 Arduino Core version has not been tested"
+just means you're not on v2.0.17 or v3.3.10 — the firmware still runs.
+
+> **Getting diagnostic logs.** The release build ships with `DEBUG 0` in
+> `Global.h`, so normal operation is quiet apart from the boot banner. If
+> you're chasing a problem or filing an issue, set `DEBUG 1`, re-flash, and
+> capture the serial output — that detailed log is the thing worth attaching
+> to a bug report.
+
+### 1.2 Before you power on
+
+By this point you've built and flashed the firmware (1.1), so `secrets.h` is
+already in place. Before the first power-up:
 
 - Confirm every sensor you intend to fit is connected — WEM auto-detects
   what's present at boot (see [Optional Sensors](#5-optional-sensors)), so a
   loose connector just means that sensor sits out, not a crash.
-- Copy `secrets.h.example` to `secrets.h` and fill in your WiFi and MQTT
-  details before flashing. `secrets.h` is git-ignored — never commit it.
 - If you're powering from the 19V mains PSU, double-check polarity at the
   barrel connector before first power-up.
 
-### 1.2 What happens on first boot
+### 1.3 What happens on first boot
 
 1. WEM checks whether a display is fitted. If one is, it initialises and
    shows the header/gauges. If not, WEM runs headless and publishes to Home
@@ -50,7 +161,7 @@ published.
    previously-saved baseline was restored from flash. This is normal and
    expected of the sensor itself, not a fault.
 
-### 1.3 First boot in a new or freshly-printed enclosure
+### 1.4 First boot in a new or freshly-printed enclosure
 
 If your WEM enclosure was just 3D printed, or you've just finished soldering
 nearby, don't let the SGP30 form its first calibration baseline while
@@ -133,7 +244,7 @@ chip** it came from. You should clear it whenever:
   onto a new one produces plausible-looking but wrong readings (commonly
   seen as TVOC/eCO2 reading flat or stuck). Clear it *before* trusting the
   new sensor, not after you've noticed bad data.
-- **First boot happened in a contaminated environment** (see 1.3 above).
+- **First boot happened in a contaminated environment** (see 1.4 above).
 - Readings look implausibly flat or pinned and you suspect a bad baseline.
 
 ### How to clear it
@@ -175,6 +286,13 @@ afterwards.
 The FT5x06 does double duty: WEM also uses its presence on the I2C bus to work
 out whether a display is fitted at all. See
 [Running Without a Display](#6-running-without-a-display-headless).
+
+**The 7" TFT display panel itself runs on 5V** (with 3.3V logic and a 3.3V
+backlight-enable input). Only the FT5x06 touch controller listed above is a
+3.3V part — the panel is not. This matters when ordering: these 7" 800x480
+modules are commonly sold in both 3.3V and 5V variants, and WEM is built for
+the **5V** version. Order the 5V variant — the 3.3V one is not a drop-in
+substitute on this board.
 
 Sensor reads happen at the cadence each sensor's own hardware needs; Home
 Assistant publishing is decoupled from that and rate-limited separately, so

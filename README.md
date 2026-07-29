@@ -22,11 +22,13 @@ The practical upshot: **start with the sensors that matter most to you and add t
 
 ---
 
-## Status
+## Getting started
 
-**This repository currently contains the hardware design files and vendored libraries only. Firmware source code is not yet published** — it's undergoing a final review pass before being committed. A `USER_GUIDE.md` covering build, flash, first-boot, and configuration instructions will be added alongside the firmware.
+Everything you need is here: the firmware, the vendored libraries it builds against, the hardware design files, and a full [`USER_GUIDE.md`](USER_GUIDE.md) covering building, flashing, first boot and configuration.
 
-If you've found this repo before that happens: watch/star it, or check back soon.
+**v1.0.0 is a compile-it-yourself release.** A compiled image has your WiFi and MQTT credentials baked into it, so there's no shared binary to download — you build the firmware from source against your own `secrets.h` and flash it to the ESP32-S3. [`USER_GUIDE.md`](USER_GUIDE.md) walks through the whole process, including the exact board settings and the vendored libraries you must build against.
+
+A way to enter WiFi/MQTT details on the device at first boot is planned as a fast-follow — after which pre-built binaries can be published too.
 
 ---
 
@@ -66,21 +68,23 @@ Two things to know before choosing that route: touch is currently WEM's only inp
 ## Repository structure
 
 ```
+├── Workshop Environment Monitor/   Arduino sketch — the firmware source
 ├── hardware/                  PCB design files (Gerbers), STEP model, hardware README
-│                              (attribution / Source Location notice), display
-│                              manufacturer datasheet, breakout-board references
+│                              (attribution / Source Location notice), Bill of Materials,
+│                              display manufacturer datasheet, breakout-board references
 │                              (photos/links being added post-launch)
 ├── Libraries/                 Full vendored copies of every Arduino library WEM
 │                              depends on, exactly as used to build and test it
 ├── stl for printing/          3D-printable enclosure and sensor mount STL files
-├── images/                    Images used by this README
+├── images/                    Images used by the README, user guide and Bill of Materials
+├── USER_GUIDE.md              Build, flash, first-boot and configuration guide
 ├── LICENSE                    Firmware licence (AGPL-3.0-or-later)
 ├── LICENSE-hardware.txt       Hardware licence (CERN-OHL-W-2.0)
 ├── THIRD_PARTY_LICENSES.md    Full attribution and licence text for every dependency
 └── secrets.h.example          Template for your own WiFi/MQTT credentials
 ```
 
-The firmware sketch folder and `USER_GUIDE.md` will be added here when the firmware is published.
+Copy `secrets.h.example` to `secrets.h` in the sketch folder and add your own WiFi/MQTT credentials before building — `secrets.h` is git-ignored and must never be committed. The user guide covers this.
 
 ---
 
