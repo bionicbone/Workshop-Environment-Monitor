@@ -75,7 +75,6 @@ Two things to know before choosing that route: touch is currently WEM's only inp
 ├── hardware/                  PCB design files (Gerbers), STEP model, hardware README
 │                              (attribution / Source Location notice), Bill of Materials,
 │                              display manufacturer datasheet, breakout-board references
-│                              (photos/links being added post-launch)
 ├── Libraries/                 Full vendored copies of every Arduino library WEM
 │                              depends on, exactly as used to build and test it
 ├── stl for printing/          3D-printable enclosure and sensor mount STL files
