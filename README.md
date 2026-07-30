@@ -1,13 +1,10 @@
-*****COMING VERY SOON, Expected released date is in the 1st week of August 2026*****
-*****I just need to check the final PCB v1.2 in a live situation***** 
-
 # Workshop Environment Monitor (WEM)
 
 An open-source ESP32-S3 based air quality and environmental monitor, built for workshops where 3D printing, soldering, and other fume-producing work happens in an enclosed space.
 
-WEM continuously measures CO2, TVOC, HCHO (formaldehyde), particulates, temperature and humidity, displays live readings on a 7" touchscreen (if fitted), and publishes everything to [Home Assistant](https://www.home-assistant.io/) over MQTT for logging (if available), automation and alerting.
+WEM continuously measures CO2, TVOC, HCHO (formaldehyde), particulates, temperature and humidity, displays live readings on a 7" touchscreen (if fitted), and publishes everything to [Home Assistant](https://www.home-assistant.io/) over MQTT for logging, automation and alerting.
 
-This project exists because 3D printing ASA, ABS or PETG and soldering in a workshop produces measurable off-gassing and fumes — WEM was built to quantify that, and to benchmark a custom venting system against real data rather than guesswork.
+This project exists because 3D printing ABS and soldering in a workshop produces measurable off-gassing and fumes — WEM was built to quantify that, and to benchmark a custom venting system against real data rather than guesswork.
 
 ![WEM 7" touchscreen display showing live sensor gauges](images/display-teaser.png)
 
@@ -75,6 +72,7 @@ Two things to know before choosing that route: touch is currently WEM's only inp
 ├── hardware/                  PCB design files (Gerbers), STEP model, hardware README
 │                              (attribution / Source Location notice), Bill of Materials,
 │                              display manufacturer datasheet, breakout-board references
+│                              (photos/links being added post-launch)
 ├── Libraries/                 Full vendored copies of every Arduino library WEM
 │                              depends on, exactly as used to build and test it
 ├── stl for printing/          3D-printable enclosure and sensor mount STL files
@@ -98,7 +96,7 @@ Gerber files for the WEM main PCB are in [`hardware/`](hardware). To get boards 
 2. Upload it directly to a fab house's quoting page — [JLCPCB](https://jlcpcb.com/).
 3. Default settings (1.6mm thickness, HASL finish, 1oz copper) match what this design was built and tested with; nothing exotic is required.
 
-Breakout-board module links and assembly photos are being put together for a launch video, for now see the BOM in the hardware folder or the pictures in the images folder.
+Breakout-board module links and assembly photos are being put together for a launch video and will be added to `hardware/` shortly after release — see the note in that folder.
 
 ---
 

@@ -142,11 +142,15 @@ already in place. Before the first power-up:
 ### 1.3 What happens on first boot
 
 1. WEM checks whether a display is fitted. If one is, it initialises and
-   shows the header/gauges. If not, WEM runs headless and publishes to Home
-   Assistant only — see [Running Without a Display](#6-running-without-a-display-headless).
+   shows a splash screen — project name, version, source link, licence and
+   a short disclaimer — which stays up for the rest of boot. If not, WEM
+   runs headless and publishes to Home Assistant only — see
+   [Running Without a Display](#6-running-without-a-display-headless).
 2. WEM attempts to connect to WiFi (a few retries, then continues in a
    degraded/offline state rather than hanging — it'll pick the connection up
-   automatically later if it appears).
+   automatically later if it appears). On a display-fitted unit, a "WiFi"
+   line is added to the splash screen once this finishes, showing whether it
+   connected.
 3. If WiFi connects, MQTT and Home Assistant discovery follow, along with
    NTP time sync and OTA readiness.
 4. Each sensor is probed, with up to 3 seconds of retries before WEM gives up
@@ -155,11 +159,20 @@ already in place. Before the first power-up:
    absent for the rest of the session: its gauge/row greys out permanently
    rather than freezing on stale data. No firmware changes are needed to run
    with a subset of sensors. Expect boot to take noticeably longer when
-   sensors are missing — that's the retry windows elapsing, not a fault.
+   sensors are missing — that's the retry windows elapsing, not a fault. On a
+   display-fitted unit, each sensor is added to the splash screen's list as
+   it's probed, so a long boot is visibly progressing rather than looking
+   frozen. **The HCHO sensor (SFA40) doesn't appear in this list** — it's a
+   passive UART stream with no boot-time check to report, so there's nothing
+   to show yet at this point; see [Optional Sensors](#5-optional-sensors).
 5. **The SGP30 (TVOC) sensor starts a warm-up period** before it publishes
    real numbers — 12 hours on a genuinely fresh start, or 1 hour if a
    previously-saved baseline was restored from flash. This is normal and
    expected of the sensor itself, not a fault.
+6. Once every step above has finished, a display-fitted unit holds the
+   completed splash screen briefly, then switches to the normal dashboard.
+   From here on the display behaves as described in
+   [section 2](#2-touchscreen-controls) onward.
 
 ### 1.4 First boot in a new or freshly-printed enclosure
 

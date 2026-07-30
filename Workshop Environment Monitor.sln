@@ -1,0 +1,107 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.37507.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Workshop Environment Monitor", "Workshop Environment Monitor.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_BME280_Library-2.3.0", "Libraries\Adafruit_BME280_Library\2.3.0\Adafruit_BME280_Library\Adafruit_BME280_Library-2.3.0.vcxitems", "{FA241AA5-A8EE-4131-8CF0-431E44D43454}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WiFi-2.0.0", "Libraries\WiFi\2.0.0\WiFi\WiFi-2.0.0.vcxitems", "{1F50B7E3-3B60-44FD-9CD6-1D1969DB0EA6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_BusIO-1.17.4", "Libraries\Adafruit_BusIO\1.17.4\Adafruit_BusIO\Adafruit_BusIO-1.17.4.vcxitems", "{A4501DC1-EB7F-4706-927D-C87DA5C1D725}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_PM25_AQI_Sensor-2.0.0", "Libraries\Adafruit_PM25_AQI_Sensor\2.0.0\Adafruit_PM25_AQI_Sensor\Adafruit_PM25_AQI_Sensor-2.0.0.vcxitems", "{4F7766E5-E66E-40E3-A856-CF27A908813C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_SGP30_Sensor-2.0.3", "Libraries\Adafruit_SGP30_Sensor\2.0.3\Adafruit_SGP30_Sensor\Adafruit_SGP30_Sensor-2.0.3.vcxitems", "{9D488CE6-08F3-403A-AE7A-FBA4D88A25C0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_SHT4x_Library-1.0.5", "Libraries\Adafruit_SHT4x_Library\1.0.5\Adafruit_SHT4x_Library\Adafruit_SHT4x_Library-1.0.5.vcxitems", "{8FA35B62-3803-4F97-BF78-F51E779D091F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_Unified_Sensor-1.1.15", "Libraries\Adafruit_Unified_Sensor\1.1.15\Adafruit_Unified_Sensor\Adafruit_Unified_Sensor-1.1.15.vcxitems", "{4A9C2037-8F0D-4137-A465-FB04E747F2F8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArduinoOTA-2.0.0", "Libraries\ArduinoOTA\2.0.0\ArduinoOTA\ArduinoOTA-2.0.0.vcxitems", "{BAE6B57E-E49E-4B37-A7B4-61788FDCD236}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "home-assistant-integration-2.1.0", "Libraries\home-assistant-integration\2.1.0\home-assistant-integration\home-assistant-integration-2.1.0.vcxitems", "{32AF3B33-7A68-470E-9636-4B0AB0ECA5FE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ld2410-0.2.2", "Libraries\ld2410\0.2.2\ld2410\ld2410-0.2.2.vcxitems", "{AC8EC4B6-19BC-4CF2-B6A4-19D5479946EF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Preferences-2.0.0", "Libraries\Preferences\2.0.0\Preferences\Preferences-2.0.0.vcxitems", "{A973C492-961E-4D86-A279-4FF84BFFD627}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PubSubClient-2.8", "Libraries\PubSubClient\2.8\PubSubClient\PubSubClient-2.8.vcxitems", "{59460139-E20F-4D90-9FD4-32B59122FC16}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sensirion_Core-0.7.3", "Libraries\Sensirion_Core\0.7.3\Sensirion_Core\Sensirion_Core-0.7.3.vcxitems", "{5CD3D841-B3FC-4815-B302-9F3981200B1A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sensirion_I2C_SCD4x-1.1.0", "Libraries\Sensirion_I2C_SCD4x\1.1.0\Sensirion_I2C_SCD4x\Sensirion_I2C_SCD4x-1.1.0.vcxitems", "{498842F7-B6B8-42D7-8480-D3296DA8487F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SPI-2.0.0", "Libraries\SPI\2.0.0\SPI\SPI-2.0.0.vcxitems", "{BA0EFB15-F4EA-47D7-AB25-A7C428DB072B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SPIFFS-2.0.0", "Libraries\SPIFFS\2.0.0\SPIFFS\SPIFFS-2.0.0.vcxitems", "{F9BB482F-170B-4C93-8193-F86109325068}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Wire-2.0.0", "Libraries\Wire\2.0.0\Wire\Wire-2.0.0.vcxitems", "{C92B7D6D-2C37-4C5E-8615-A4E266C20996}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TFT_eSPI-2.5.43", "Libraries\TFT_eSPI\2.5.43\TFT_eSPI\TFT_eSPI-2.5.43.vcxitems", "{7F40E0A3-16AE-466E-ABA2-A91A76AD179C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FS-2.0.0", "Libraries\FS\2.0.0\FS\FS-2.0.0.vcxitems", "{B0C98E5F-5260-416D-92D7-653DA85AB4CE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ESPmDNS-2.0.0", "Libraries\ESPmDNS\2.0.0\ESPmDNS\ESPmDNS-2.0.0.vcxitems", "{39B65657-91CA-4BC0-BB71-D607BBBBCA96}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Libraries\WiFi\2.0.0\WiFi\WiFi-2.0.0.vcxitems*{1f50b7e3-3b60-44fd-9cd6-1d1969db0ea6}*SharedItemsImports = 9
+		Libraries\home-assistant-integration\2.1.0\home-assistant-integration\home-assistant-integration-2.1.0.vcxitems*{32af3b33-7a68-470e-9636-4b0ab0eca5fe}*SharedItemsImports = 9
+		Libraries\ESPmDNS\2.0.0\ESPmDNS\ESPmDNS-2.0.0.vcxitems*{39b65657-91ca-4bc0-bb71-d607bbbbca96}*SharedItemsImports = 9
+		Libraries\Sensirion_I2C_SCD4x\1.1.0\Sensirion_I2C_SCD4x\Sensirion_I2C_SCD4x-1.1.0.vcxitems*{498842f7-b6b8-42d7-8480-d3296da8487f}*SharedItemsImports = 9
+		Libraries\Adafruit_Unified_Sensor\1.1.15\Adafruit_Unified_Sensor\Adafruit_Unified_Sensor-1.1.15.vcxitems*{4a9c2037-8f0d-4137-a465-fb04e747f2f8}*SharedItemsImports = 9
+		Libraries\Adafruit_PM25_AQI_Sensor\2.0.0\Adafruit_PM25_AQI_Sensor\Adafruit_PM25_AQI_Sensor-2.0.0.vcxitems*{4f7766e5-e66e-40e3-a856-cf27a908813c}*SharedItemsImports = 9
+		Libraries\PubSubClient\2.8\PubSubClient\PubSubClient-2.8.vcxitems*{59460139-e20f-4d90-9fd4-32b59122fc16}*SharedItemsImports = 9
+		Libraries\Sensirion_Core\0.7.3\Sensirion_Core\Sensirion_Core-0.7.3.vcxitems*{5cd3d841-b3fc-4815-b302-9f3981200b1a}*SharedItemsImports = 9
+		Libraries\TFT_eSPI\2.5.43\TFT_eSPI\TFT_eSPI-2.5.43.vcxitems*{7f40e0a3-16ae-466e-aba2-a91a76ad179c}*SharedItemsImports = 9
+		Libraries\Adafruit_SHT4x_Library\1.0.5\Adafruit_SHT4x_Library\Adafruit_SHT4x_Library-1.0.5.vcxitems*{8fa35b62-3803-4f97-bf78-f51e779d091f}*SharedItemsImports = 9
+		Libraries\Adafruit_SGP30_Sensor\2.0.3\Adafruit_SGP30_Sensor\Adafruit_SGP30_Sensor-2.0.3.vcxitems*{9d488ce6-08f3-403a-ae7a-fba4d88a25c0}*SharedItemsImports = 9
+		Libraries\Adafruit_BusIO\1.17.4\Adafruit_BusIO\Adafruit_BusIO-1.17.4.vcxitems*{a4501dc1-eb7f-4706-927d-c87da5c1d725}*SharedItemsImports = 9
+		Libraries\Preferences\2.0.0\Preferences\Preferences-2.0.0.vcxitems*{a973c492-961e-4d86-a279-4ff84bffd627}*SharedItemsImports = 9
+		Libraries\ld2410\0.2.2\ld2410\ld2410-0.2.2.vcxitems*{ac8ec4b6-19bc-4cf2-b6a4-19d5479946ef}*SharedItemsImports = 9
+		Libraries\FS\2.0.0\FS\FS-2.0.0.vcxitems*{b0c98e5f-5260-416d-92d7-653da85ab4ce}*SharedItemsImports = 9
+		Libraries\SPI\2.0.0\SPI\SPI-2.0.0.vcxitems*{ba0efb15-f4ea-47d7-ab25-a7c428db072b}*SharedItemsImports = 9
+		Libraries\ArduinoOTA\2.0.0\ArduinoOTA\ArduinoOTA-2.0.0.vcxitems*{bae6b57e-e49e-4b37-a7b4-61788fdcd236}*SharedItemsImports = 9
+		Libraries\Adafruit_BME280_Library\2.3.0\Adafruit_BME280_Library\Adafruit_BME280_Library-2.3.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Adafruit_BusIO\1.17.4\Adafruit_BusIO\Adafruit_BusIO-1.17.4.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Adafruit_PM25_AQI_Sensor\2.0.0\Adafruit_PM25_AQI_Sensor\Adafruit_PM25_AQI_Sensor-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Adafruit_SGP30_Sensor\2.0.3\Adafruit_SGP30_Sensor\Adafruit_SGP30_Sensor-2.0.3.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Adafruit_SHT4x_Library\1.0.5\Adafruit_SHT4x_Library\Adafruit_SHT4x_Library-1.0.5.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Adafruit_Unified_Sensor\1.1.15\Adafruit_Unified_Sensor\Adafruit_Unified_Sensor-1.1.15.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\ArduinoOTA\2.0.0\ArduinoOTA\ArduinoOTA-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\ESPmDNS\2.0.0\ESPmDNS\ESPmDNS-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\FS\2.0.0\FS\FS-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\home-assistant-integration\2.1.0\home-assistant-integration\home-assistant-integration-2.1.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\ld2410\0.2.2\ld2410\ld2410-0.2.2.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Preferences\2.0.0\Preferences\Preferences-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\PubSubClient\2.8\PubSubClient\PubSubClient-2.8.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Sensirion_Core\0.7.3\Sensirion_Core\Sensirion_Core-0.7.3.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Sensirion_I2C_SCD4x\1.1.0\Sensirion_I2C_SCD4x\Sensirion_I2C_SCD4x-1.1.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\SPIFFS\2.0.0\SPIFFS\SPIFFS-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\SPI\2.0.0\SPI\SPI-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\TFT_eSPI\2.5.43\TFT_eSPI\TFT_eSPI-2.5.43.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\WiFi\2.0.0\WiFi\WiFi-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Wire\2.0.0\Wire\Wire-2.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		Libraries\Wire\2.0.0\Wire\Wire-2.0.0.vcxitems*{c92b7d6d-2c37-4c5e-8615-a4e266c20996}*SharedItemsImports = 9
+		Libraries\SPIFFS\2.0.0\SPIFFS\SPIFFS-2.0.0.vcxitems*{f9bb482f-170b-4c93-8193-f86109325068}*SharedItemsImports = 9
+		Libraries\Adafruit_BME280_Library\2.3.0\Adafruit_BME280_Library\Adafruit_BME280_Library-2.3.0.vcxitems*{fa241aa5-a8ee-4131-8cf0-431e44d43454}*SharedItemsImports = 9
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.ActiveCfg = Debug|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.Build.0 = Debug|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD3218E5-BD9E-4B38-9457-E0708A5937E6}
+	EndGlobalSection
+EndGlobal
