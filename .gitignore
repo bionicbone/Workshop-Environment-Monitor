@@ -15,6 +15,7 @@ secrets.*.h
 secrets.h.bak
 *.secrets.h
 RELEASE_PROCEDURE.md
+/YouTube_Videos/
 
 ###############################################################################
 # WEM-specific — Arduino / Visual Micro build artefacts

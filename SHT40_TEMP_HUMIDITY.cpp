@@ -79,10 +79,12 @@ void setupSHT40() {
       ha_sht40_temp.setName("SHT40_Temperature");
       ha_sht40_temp.setUnitOfMeasurement("\u00B0C");
       ha_sht40_temp.setIcon("mdi:thermometer");
+      ha_sht40_temp.setStateClass("measurement");
 
       ha_sht40_humidity.setName("SHT40_Humidity");
       ha_sht40_humidity.setUnitOfMeasurement("%RH");
       ha_sht40_humidity.setIcon("mdi:water-percent");
+      ha_sht40_humidity.setStateClass("measurement");
       return;
     }
     delay(SENSOR_BEGIN_RETRY_DELAY_MS);

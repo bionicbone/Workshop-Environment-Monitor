@@ -70,14 +70,17 @@ void setupBME280() {
       ha_bme280_temp.setName("BME280_Temperature");
       ha_bme280_temp.setUnitOfMeasurement("\u00B0C");
       ha_bme280_temp.setIcon("mdi:thermometer");
+      ha_bme280_temp.setStateClass("measurement");
 
       ha_bme280_humidity.setName("BME280_Humidity");
       ha_bme280_humidity.setUnitOfMeasurement("%RH");
       ha_bme280_humidity.setIcon("mdi:water-percent");
+      ha_bme280_humidity.setStateClass("measurement");
 
       ha_bme280_pressure.setName("BME280_Pressure");
       ha_bme280_pressure.setUnitOfMeasurement("hPa");
       ha_bme280_pressure.setIcon("mdi:gauge");
+      ha_bme280_pressure.setStateClass("measurement");
       return;
     }
     delay(SENSOR_BEGIN_RETRY_DELAY_MS);

@@ -313,6 +313,13 @@ void setupHA() {
   device.enableSharedAvailability();
   device.enableLastWill();
 
+  // NOTE: per-entity setup (setName/setUnitOfMeasurement/setIcon/
+  // setStateClass) lives in each sensor's own setup...() function
+  // (SFA40_HCHO_Sensor.cpp, BME280_TEMP_HUMIDITY.cpp, SCD40_CO2.cpp,
+  // SGP30_VOC.cpp, SHT40_TEMP_HUMIDITY.cpp, PMS5003_Particles.cpp) -
+  // deliberately NOT duplicated here. Each entity's identity has exactly
+  // one place it's configured; see those files for state_class/units.
+
   mqtt.begin(BROKER_ADDR, 1883, MQTT_USERNAME, MQTT_PASSWORD);
 }
 

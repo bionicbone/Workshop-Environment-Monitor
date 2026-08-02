@@ -140,50 +140,62 @@ void setupPMS5003() {
         ha_pms_pm10_std.setName("PMS5003_PM1.0_Standard");
         ha_pms_pm10_std.setUnitOfMeasurement("\u00B5g/m\u00B3");
         ha_pms_pm10_std.setIcon("mdi:blur");
+        ha_pms_pm10_std.setStateClass("measurement");
 
         ha_pms_pm25_std.setName("PMS5003_PM2.5_Standard");
         ha_pms_pm25_std.setUnitOfMeasurement("\u00B5g/m\u00B3");
         ha_pms_pm25_std.setIcon("mdi:blur");
+        ha_pms_pm25_std.setStateClass("measurement");
 
         ha_pms_pm100_std.setName("PMS5003_PM10_Standard");
         ha_pms_pm100_std.setUnitOfMeasurement("\u00B5g/m\u00B3");
         ha_pms_pm100_std.setIcon("mdi:blur");
+        ha_pms_pm100_std.setStateClass("measurement");
 
         ha_pms_pm10_atm.setName("PMS5003_PM1.0_Atmospheric");
         ha_pms_pm10_atm.setUnitOfMeasurement("\u00B5g/m\u00B3");
         ha_pms_pm10_atm.setIcon("mdi:blur");
+        ha_pms_pm10_atm.setStateClass("measurement");
 
         ha_pms_pm25_atm.setName("PMS5003_PM2.5_Atmospheric");
         ha_pms_pm25_atm.setUnitOfMeasurement("\u00B5g/m\u00B3");
         ha_pms_pm25_atm.setIcon("mdi:blur");
+        ha_pms_pm25_atm.setStateClass("measurement");
 
         ha_pms_pm100_atm.setName("PMS5003_PM10_Atmospheric");
         ha_pms_pm100_atm.setUnitOfMeasurement("\u00B5g/m\u00B3");
         ha_pms_pm100_atm.setIcon("mdi:blur");
+        ha_pms_pm100_atm.setStateClass("measurement");
 
         ha_pms_cnt_03.setName("PMS5003_Count_0.3um");
         ha_pms_cnt_03.setUnitOfMeasurement("cnt/0.1L");
         ha_pms_cnt_03.setIcon("mdi:dots-circle");
+        ha_pms_cnt_03.setStateClass("measurement");
 
         ha_pms_cnt_05.setName("PMS5003_Count_0.5um");
         ha_pms_cnt_05.setUnitOfMeasurement("cnt/0.1L");
         ha_pms_cnt_05.setIcon("mdi:dots-circle");
+        ha_pms_cnt_05.setStateClass("measurement");
 
         ha_pms_cnt_10.setName("PMS5003_Count_1.0um");
         ha_pms_cnt_10.setUnitOfMeasurement("cnt/0.1L");
         ha_pms_cnt_10.setIcon("mdi:dots-circle");
+        ha_pms_cnt_10.setStateClass("measurement");
 
         ha_pms_cnt_25.setName("PMS5003_Count_2.5um");
         ha_pms_cnt_25.setUnitOfMeasurement("cnt/0.1L");
         ha_pms_cnt_25.setIcon("mdi:dots-circle");
+        ha_pms_cnt_25.setStateClass("measurement");
 
         ha_pms_cnt_50.setName("PMS5003_Count_5.0um");
         ha_pms_cnt_50.setUnitOfMeasurement("cnt/0.1L");
         ha_pms_cnt_50.setIcon("mdi:dots-circle");
+        ha_pms_cnt_50.setStateClass("measurement");
 
         ha_pms_cnt_100.setName("PMS5003_Count_10um");
         ha_pms_cnt_100.setUnitOfMeasurement("cnt/0.1L");
         ha_pms_cnt_100.setIcon("mdi:dots-circle");
+        ha_pms_cnt_100.setStateClass("measurement");
 
         // ---- Publish the detection frame immediately ----
         // The detection scan above already parsed a genuine checksum-passed

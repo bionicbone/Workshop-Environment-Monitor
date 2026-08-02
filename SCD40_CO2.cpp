@@ -92,14 +92,17 @@ void setupSCD40_CO2() {
       ha_scd40_co2.setName("SCD40_CO2");
       ha_scd40_co2.setUnitOfMeasurement("ppm");
       ha_scd40_co2.setIcon("mdi:molecule-co2");
+      ha_scd40_co2.setStateClass("measurement");
 
       ha_scd40_temp.setName("SCD40_Temperature");
       ha_scd40_temp.setUnitOfMeasurement("\u00B0C");
       ha_scd40_temp.setIcon("mdi:thermometer");
+      ha_scd40_temp.setStateClass("measurement");
 
       ha_scd40_humidity.setName("SCD40_Humidity");
       ha_scd40_humidity.setUnitOfMeasurement("%RH");
       ha_scd40_humidity.setIcon("mdi:water-percent");
+      ha_scd40_humidity.setStateClass("measurement");
       return;
     }
   }

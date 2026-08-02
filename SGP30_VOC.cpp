@@ -77,10 +77,12 @@ void setupSGP30_VOC() {
       ha_sgp30_eco2.setName("SGP30_eCO2");
       ha_sgp30_eco2.setUnitOfMeasurement("ppm");
       ha_sgp30_eco2.setIcon("mdi:molecule-co2");
+      ha_sgp30_eco2.setStateClass("measurement");
 
       ha_sgp30_tvoc.setName("SGP30_TVOC");
       ha_sgp30_tvoc.setUnitOfMeasurement("ppb");
       ha_sgp30_tvoc.setIcon("mdi:air-filter");
+      ha_sgp30_tvoc.setStateClass("measurement");
 
       return;
     }

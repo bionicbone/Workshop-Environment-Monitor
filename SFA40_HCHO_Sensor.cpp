@@ -54,14 +54,17 @@ void setupSFA40_HCHO() {
   ha_sfa40_hcho.setName("SFA40_HCHO");
   ha_sfa40_hcho.setUnitOfMeasurement("ppb");
   ha_sfa40_hcho.setIcon("mdi:biohazard");
+  ha_sfa40_hcho.setStateClass("measurement");
 
   ha_sfa40_temp.setName("SFA40_Temperature");
   ha_sfa40_temp.setUnitOfMeasurement("\u00B0C");
   ha_sfa40_temp.setIcon("mdi:thermometer");
+  ha_sfa40_temp.setStateClass("measurement");
 
   ha_sfa40_humidity.setName("SFA40_Humidity");
   ha_sfa40_humidity.setUnitOfMeasurement("%RH");
   ha_sfa40_humidity.setIcon("mdi:water-percent");
+  ha_sfa40_humidity.setStateClass("measurement");
 }
 
 
