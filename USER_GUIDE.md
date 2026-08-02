@@ -500,13 +500,24 @@ WEM raises an audible alarm (piezo buzzer) and a visual warning on the
 display when a reading crosses its threshold. Thresholds are chosen to flag
 "you should probably act on this now", not raw sensor limits:
 
-| Reading | Alarm threshold | Notes |
+| Reading | Alarm threshold | Basis |
 |---|---|---|
-| CO2 | > 2000 ppm | Comfort/ventilation, not toxicity |
-| TVOC | > 1000 ppb | Set so a carbon filter running for ~5 min clears it — acts as a "filter should be on" reminder rather than a nuisance alarm |
-| HCHO (formaldehyde) | > 150 ppb | Raised from 100 ppb to reduce false alarms from human presence |
-| PM2.5 (mass) | > 35 ug/m3 | Atmospheric channel, not the particle count |
-| PM10 (mass) | > 154 ug/m3 | Atmospheric channel, not the particle count |
+| CO2 | > 2000 ppm | Ventilation/comfort proxy, not toxicity; well under the 5000 ppm workplace 8-hour limit |
+| TVOC | > 660 ppb | TVOC has no health-based limit — it's a relative indicator; 660 ppb is the moderate-to-poor boundary on the common IAQ scale |
+| HCHO (formaldehyde) | > 80 ppb | WHO residential guideline (~0.1 mg/m3 over 30 min); the workplace limit is roughly nine times higher |
+| PM2.5 (mass) | > 35 ug/m3 | US EPA onset of "unhealthy for sensitive groups"; mass channel, not the particle count |
+| PM10 (mass) | > 154 ug/m3 | Top of the US EPA "moderate" band; mass channel, not the particle count |
+
+**WEM alarms early, on purpose.** These thresholds follow *residential*
+air-quality guidance — the levels considered acceptable for the general
+population, including children, the elderly and people with respiratory
+conditions, breathing the air continuously. They are deliberately **not**
+occupational limits. Workplace limits (OSHA/NIOSH) assume a healthy adult
+exposed for an eight-hour shift and are far higher — the formaldehyde
+workplace limit, for instance, is around nine times WEM's 80 ppb alarm. WEM is
+built for a home workshop, where you may be present in the evenings and at
+weekends and where the air is often shared with the rest of the house, so it
+uses the stricter home numbers and errs toward warning you sooner.
 
 All five sound the same two-beep pattern — the buzzer tells you *something* is
 over threshold, not which. The display's left-hand status panel shows which
@@ -520,7 +531,7 @@ behaviours stop a value hovering near its threshold from producing rapid
 on/off flapping:
 
 - Each hazard latches on at its threshold and only clears once the reading
-  falls to **90% of it** (so TVOC alarms at 1000 ppb and clears below 900).
+  falls to **90% of it** (so CO2 alarms at 2000 ppm and clears below 1800).
 - Once triggered, the alarm holds for **at least one full 3-second cycle**,
   even if the reading drops immediately.
 
@@ -536,6 +547,43 @@ logic entirely — WEM won't sound an alarm based on old data, and won't stay
 silent forever on a genuinely dead sensor either, since the display shows
 that reading as greyed-out/stale so you can see something's wrong at a
 glance.
+
+### 7.1 Changing a threshold for your own use case
+
+Every threshold lives as a `THRESH_` define in `Graphics.h` — for example
+`THRESH_HCHO_WARN`. Each reading has two: a `GOOD` value (the green ceiling on
+the display) and a `WARN` value (the orange/red boundary *and* the point the
+buzzer uses). Raising `WARN` makes WEM alarm later; lowering it makes WEM alarm
+sooner. After editing, recompile and reflash — see
+[Building and flashing the firmware](#11-building-and-flashing-the-firmware).
+
+There are legitimate reasons to raise one. A workshop lined with MDF, for
+instance, will sit above the residential HCHO guideline much of the time purely
+from off-gassing, and you may reasonably decide a higher alarm point matches
+how you actually work. That's a fair call to make. But be clear about the
+trade: raising a threshold means WEM stays silent while a reading sits in a
+range that genuinely is unhealthy for continuous exposure. You're exchanging
+early warning for fewer interruptions, and it's worth knowing that's the
+exchange you've made.
+
+Two things worth doing before you touch a number:
+
+- **Find the root cause first.** An alarm that keeps firing is usually telling
+  you something true. Ventilate, run a filter, move or enclose the source —
+  fix the air, and the alarm often stops on its own with the threshold left
+  alone. Raising the number to quieten a real problem doesn't fix anything; it
+  just removes the warning while the problem carries on.
+- **Don't set it somewhere it can never fire.** A threshold parked far above
+  anything you'll realistically see is the same as switching that alarm off. If
+  you raise it, raise it to a considered number — not to "never".
+
+> **You own that decision.** WEM ships with conservative, health-forward
+> defaults. Change them and the responsibility for what the device does and
+> doesn't warn you about becomes yours. WEM is a hobby air-quality monitor, not
+> a certified gas detector or life-safety product — as stated in the licence
+> and the `NOT A SAFETY DEVICE` notice in the firmware source. Treat its
+> readings and alarms as useful information to act on, never as a guarantee of
+> safety.
 
 ---
 
