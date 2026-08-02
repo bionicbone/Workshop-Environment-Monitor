@@ -219,16 +219,53 @@
 
 // ============================================================
 //  SAFETY THRESHOLDS
+//
+//  STANCE (v1.0.0 release default): conservative, alarm early.
+//  Alarm points are anchored to RESIDENTIAL / general-population
+//  air-quality guidance (WHO, US EPA), NOT to occupational limits.
+//  Occupational limits (OSHA/NIOSH) assume a healthy adult on an 8h
+//  shift; residential guidance assumes everyone - children, the
+//  elderly, the unwell - breathing the air continuously, and is far
+//  stricter. WEM is a home device, so it uses the home numbers. A
+//  user whose workshop runs hotter can raise these to suit their own
+//  use case - that is a conscious, owned decision, and it can push a
+//  reading into the 'poor' band before the buzzer sounds.
+//
+//  Two thresholds per reading:
+//    GOOD - green ceiling (display colour only)
+//    WARN - orange/red boundary AND the buzzer trigger
+//
+//  Only five drive the alarm: CO2, HCHO, TVOC, PM2.5, PM10. Temp and
+//  humidity are comfort bands - display colour only, never the buzzer.
+//
+//  Basis for each alarm point (WARN):
+//    CO2  2000 ppm   - ventilation/comfort proxy, not a toxin at these
+//                      levels. 1000 = adequate-ventilation marker;
+//                      effects clear by 2000; occupational limit is
+//                      5000 (8h TWA). Deliberately not pulled to 1500 -
+//                      a closed one-person workshop would nuisance-alarm.
+//    HCHO   80 ppb   - WHO residential 30-min guideline (0.1 mg/m3 ~=
+//                      80 ppb). Occupational PEL is 750 ppb, ~9x higher.
+//                      Alarming AT the home guideline is the honest
+//                      'early' point.
+//    TVOC  660 ppb   - no health-based limit exists for TVOC; it is a
+//                      relative indicator only. 660 = common IAQ
+//                      moderate->poor boundary; alarm on entry to 'poor'.
+//    PM2.5  35 ug/m3 - onset of 'unhealthy for sensitive groups' (EPA).
+//                      GOOD 9 = EPA 2024 good/moderate line (was 12);
+//                      WHO 24h guideline is 15.
+//    PM10  154 ug/m3 - top of EPA 'moderate' band. GOOD 45 = WHO 2021
+//                      24h PM10 guideline (was EPA's 54).
 // ============================================================
 #define THRESH_CO2_GOOD       1000.0f
 #define THRESH_CO2_WARN       2000.0f
 #define THRESH_HCHO_GOOD        25.0f
-#define THRESH_HCHO_WARN       150.0f     // Original 100.0f
+#define THRESH_HCHO_WARN        80.0f
 #define THRESH_TVOC_GOOD       220.0f
-#define THRESH_TVOC_WARN      1000.0f     // Original 660.0f
-#define THRESH_PM25_GOOD        12.0f
+#define THRESH_TVOC_WARN       660.0f
+#define THRESH_PM25_GOOD         9.0f
 #define THRESH_PM25_WARN        35.0f
-#define THRESH_PM10_GOOD        54.0f
+#define THRESH_PM10_GOOD        45.0f
 #define THRESH_PM10_WARN       154.0f
 #define THRESH_TEMP_LOW_GOOD    15.0f
 #define THRESH_TEMP_HIGH_GOOD   25.0f
