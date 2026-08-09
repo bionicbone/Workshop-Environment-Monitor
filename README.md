@@ -6,7 +6,8 @@ WEM continuously measures CO2, TVOC, HCHO (formaldehyde), particulates, temperat
 
 This project exists because 3D printing ABS and soldering in a workshop produces measurable off-gassing and fumes — WEM was built to quantify that, and to benchmark a custom venting system against real data rather than guesswork.
 
-![WEM 7" touchscreen display showing live sensor gauges](images/display-teaser.png)
+![WEM with Enclosure showing live sensor gauges](<images/Me holding WEM in Enclosure.png>)
+
 
 ---
 
@@ -19,6 +20,10 @@ These two ideas pull against each other, and how WEM resolves that is the main t
 **So the build is modular.** Every sensor is optional, and so is the touchscreen. WEM probes what's connected at boot and adapts: absent hardware is excluded from the display, from the alarms, and from Home Assistant, with no code changes, no build flags, and nothing to configure.
 
 The practical upshot: **start with the sensors that matter most to you and add the rest as you can afford them.** A WEM with two sensors and no screen is a legitimate build, not a broken one — and adding a sensor later is a matter of plugging it in and restarting.
+
+## YouTube
+
+[![Workshop Fumes Are Invisible — I Built a Monitor to See Them](https://img.youtube.com/vi/jspVboeYZX0/maxresdefault.jpg)](https://youtu.be/jspVboeYZX0)
 
 ---
 
