@@ -407,7 +407,7 @@ void drawStaticChrome() {
   tft.setFreeFont(FONT_BOLD_SM);
   tft.setTextColor(COL_LABEL, COL_BG);
   tft.setTextDatum(ML_DATUM);
-  tft.drawString("VENT", OUTSIDE_X, VENT_BLOCK_Y + 2);
+  tft.drawString("3D PRINTER VENT", OUTSIDE_X, VENT_BLOCK_Y + 2);
 
   // Vent block row labels - drawn once, never erased
   // Values are drawn in-place over COL_BG background, labels stay put

@@ -257,24 +257,24 @@
 //    PM10  154 ug/m3 - top of EPA 'moderate' band. GOOD 45 = WHO 2021
 //                      24h PM10 guideline (was EPA's 54).
 // ============================================================
-#define THRESH_CO2_GOOD       1000.0f
-#define THRESH_CO2_WARN       2000.0f
-#define THRESH_HCHO_GOOD        25.0f
-#define THRESH_HCHO_WARN        80.0f
-#define THRESH_TVOC_GOOD       220.0f
-#define THRESH_TVOC_WARN       660.0f
-#define THRESH_PM25_GOOD         9.0f
-#define THRESH_PM25_WARN        35.0f
-#define THRESH_PM10_GOOD        45.0f
-#define THRESH_PM10_WARN       154.0f
-#define THRESH_TEMP_LOW_GOOD    15.0f
-#define THRESH_TEMP_HIGH_GOOD   25.0f
-#define THRESH_TEMP_LOW_WARN    10.0f
-#define THRESH_TEMP_HIGH_WARN   30.0f
-#define THRESH_HUM_LOW_GOOD     30.0f
-#define THRESH_HUM_HIGH_GOOD    60.0f
-#define THRESH_HUM_LOW_WARN     20.0f
-#define THRESH_HUM_HIGH_WARN    70.0f
+#define THRESH_CO2_GOOD       1000.0f         // Original 1000
+#define THRESH_CO2_WARN       2000.0f         // Original 2000
+#define THRESH_HCHO_GOOD        25.0f         // Original 25
+#define THRESH_HCHO_WARN        80.0f         // Original 80
+#define THRESH_TVOC_GOOD       220.0f         // Original 220
+#define THRESH_TVOC_WARN       660.0f         // Original 660
+#define THRESH_PM25_GOOD         9.0f         // Original 9
+#define THRESH_PM25_WARN        35.0f         // Original 35
+#define THRESH_PM10_GOOD        45.0f         // Original 45
+#define THRESH_PM10_WARN       154.0f         // Original 154
+#define THRESH_TEMP_LOW_GOOD    15.0f         // Original 15
+#define THRESH_TEMP_HIGH_GOOD   25.0f         // Original 25
+#define THRESH_TEMP_LOW_WARN    10.0f         // Original 10
+#define THRESH_TEMP_HIGH_WARN   30.0f         // Original 30
+#define THRESH_HUM_LOW_GOOD     30.0f         // Original 30
+#define THRESH_HUM_HIGH_GOOD    60.0f         // Original 60
+#define THRESH_HUM_LOW_WARN     20.0f         // Original 20
+#define THRESH_HUM_HIGH_WARN    70.0f         // Original 70
 
 // ============================================================
 //  GAUGE FULL-SCALE

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.37507.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Workshop Environment Monitor", "Workshop Environment Monitor.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Workshop-Environment-Monitor", "Workshop-Environment-Monitor.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_BME280_Library-2.3.0", "Libraries\Adafruit_BME280_Library\2.3.0\Adafruit_BME280_Library\Adafruit_BME280_Library-2.3.0.vcxitems", "{FA241AA5-A8EE-4131-8CF0-431E44D43454}"
 EndProject

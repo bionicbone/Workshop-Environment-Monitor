@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Workshop Environment Monitor.ino" />
+    <None Include="Workshop-Environment-Monitor.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.Workshop Environment Monitor.vsarduino.h">
+    <ClInclude Include="__vm\.Workshop-Environment-Monitor.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Backlight.h">
