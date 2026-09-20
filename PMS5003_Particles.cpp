@@ -250,7 +250,6 @@ static void pmsFlushRx() {
     flushed++;
   }
   debugLoop("RX flushed (%d bytes discarded)", flushed);
-  debugSpecial("RX flushed (%d bytes discarded)", flushed);
 }
 
 // ============================================================
@@ -326,7 +325,6 @@ void loopPMS5003() {
 
     if (elapsed >= PMS_READ_WINDOW_MS) {
       debugLoop("Read window expired with no frame - giving up this cycle");
-      debugSpecial("Read window expired with no frame - giving up this cycle");
       sleepPMS5003();
       pmsState = PMS_ASLEEP;
       pmsStateStart = now;
@@ -335,19 +333,16 @@ void loopPMS5003() {
 
     if (pmsRecoveryTier < 1 && elapsed >= PMS_RECOVERY_TIER1_MS) {
       debugLoop("Recovery tier 1: flushing RX buffer");
-      debugSpecial("Recovery tier 1: flushing RX buffer");
       pmsFlushRx();
       pmsRecoveryTier = 1;
     }
     else if (pmsRecoveryTier < 2 && elapsed >= PMS_RECOVERY_TIER2_MS) {
       debugLoop("Recovery tier 2: re-sending wake command");
-      debugSpecial("Recovery tier 2: re-sending wake command");
       wakePMS5003();
       pmsRecoveryTier = 2;
     }
     else if (pmsRecoveryTier < 3 && elapsed >= PMS_RECOVERY_TIER3_MS) {
       debugLoop("Recovery tier 3: reinitialising Serial2");
-      debugSpecial("Recovery tier 3: reinitialising Serial2");
       Serial2.end();
       Serial2.begin(9600, SERIAL_8N1, PMS5003_RX_PIN, PMS5003_TX_PIN);
       pmsRecoveryTier = 3;
@@ -410,7 +405,6 @@ bool updatePMS5003() {
   // not as a real gate in the current call path.
   if (!pms5003Stable) {
     debugLoop("Skipping read - stabilisation window not elapsed");
-    debugSpecial("Skipping read - stabilisation window not elapsed");
     return false;
   }
 
@@ -438,7 +432,6 @@ void sleepPMS5003() {
   uint8_t sleepCmd[] = { 0x42, 0x4D, 0xE4, 0x00, 0x00, 0x01, 0x73 };
   Serial2.write(sleepCmd, sizeof(sleepCmd));
   debugLoop("Sleeping");
-  debugSpecial("Sleeping");
 }
 
 void wakePMS5003() {
@@ -447,6 +440,5 @@ void wakePMS5003() {
   }
   uint8_t wakeCmd[] = { 0x42, 0x4D, 0xE4, 0x00, 0x01, 0x01, 0x74 };
   Serial2.write(wakeCmd, sizeof(wakeCmd));
-  debugLoop("Awake and stabilised");
-  debugSpecial("Awake and stabilised");
+  debugLoop("Awake and stabilised");;
 }

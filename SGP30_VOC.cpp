@@ -42,6 +42,8 @@
 // SGP30_VOC.cpp
 
 #include "SGP30_VOC.h"
+#include "SHT40_TEMP_HUMIDITY.h"   // sht40Detected/lastSHT40OkMs - humidity compensation source gate
+#include <math.h>                  // expf() - humidity compensation conversion
 
 Adafruit_SGP30 sgp30;
 Preferences preferences;
@@ -49,6 +51,15 @@ Preferences preferences;
 bool sgp30Detected = false;           // set true only if the sensor answers at boot
 unsigned long lastSGP30OkMs = 0;
 bool sgp30BaselineRestored = false;   // set true only by a valid restore
+
+// Current known baseline pair, for HA publishing only - kept separate from
+// the NVS/live-chip values. 0 means "not yet known" (matches the existing
+// 0 = no-baseline convention used elsewhere in this file). Set by a
+// successful restore() or save() below; published from updateSGP30_VOC()'s
+// existing periodic HA-publish window rather than at the point they're set -
+// see the note above updateSGP30_VOC() for why.
+static uint16_t currentEco2Baseline = 0;
+static uint16_t currentTvocBaseline = 0;
 
 // ============================================================
 //  SETUP
@@ -84,6 +95,22 @@ void setupSGP30_VOC() {
       ha_sgp30_tvoc.setIcon("mdi:air-filter");
       ha_sgp30_tvoc.setStateClass("measurement");
 
+      // Baseline entities - the saved/restored calibration state itself, not
+      // a live reading. No unit set deliberately: these are raw on-chip
+      // register values, not calibrated ppm/ppb (see the plausibility-range
+      // check note under restoreSGP30Baseline() below for why they're only
+      // conventionally treated as living in that numeric space). Set by
+      // restoreSGP30Baseline()/saveSGP30Baseline() below, but actually
+      // published from updateSGP30_VOC()'s periodic HA-publish window - see
+      // the note in restoreSGP30Baseline() for why.
+      ha_sgp30_eco2_baseline.setName("SGP30_eCO2_Baseline");
+      ha_sgp30_eco2_baseline.setIcon("mdi:content-save-cog-outline");
+      ha_sgp30_eco2_baseline.setStateClass("measurement");
+
+      ha_sgp30_tvoc_baseline.setName("SGP30_TVOC_Baseline");
+      ha_sgp30_tvoc_baseline.setIcon("mdi:content-save-cog-outline");
+      ha_sgp30_tvoc_baseline.setStateClass("measurement");
+
       return;
     }
     delay(SENSOR_BEGIN_RETRY_DELAY_MS);
@@ -94,6 +121,82 @@ void setupSGP30_VOC() {
 }
 
 // ============================================================
+//  HUMIDITY COMPENSATION
+//
+//  The SGP30's eCO2/TVOC algorithm has real cross-sensitivity to humidity.
+//  Without ever calling setHumidity(), the chip runs on a fixed internal
+//  assumption (Sensirion default, roughly equivalent to 25C/50%RH) with NO
+//  correction for the real environment. An outdoor 12h soak on an otherwise
+//  freshly NVS-reset chip logged TVOC tracking RH's phase changes (55% ->
+//  70% -> 79% over one overnight session) rather than staying flat -
+//  confirming this was a real, uncompensated source of error, not just a
+//  theoretical one.
+//
+//  Sourced from SHT40 (see SHT40_TEMP_HUMIDITY.cpp) via the shared
+//  temperature/humidity globals it already writes each ~5s cycle (declared
+//  in SCD40_CO2.h - see that file's own note on why SHT40 is the sole,
+//  no-fallback source for these globals project-wide). This function does
+//  NOT read SHT40 itself, so it adds no new I2C traffic of its own beyond
+//  the setHumidity() write below.
+//
+//  Throttled to once a minute: real humidity moves on a timescale of tens
+//  of minutes to hours (weather, dew, HVAC cycling), not seconds, and every
+//  extra I2C transaction on this bus has deserved caution ever since the
+//  SHT40/SGP30 blocking-window investigation - no reason to add near-1Hz
+//  traffic (updateSGP30_VOC() runs on a 1s timer) for a value that doesn't
+//  change anywhere near that fast.
+//
+//  Gated on sht40Detected AND freshness (STALE_MED_MS - the same gate
+//  Graphics.cpp/Buzzer.cpp already use for SHT40 elsewhere). A missing or
+//  stalled SHT40 must NOT silently keep feeding an old, increasingly-wrong
+//  humidity value forever - if gated out, the SGP30 just keeps using
+//  whatever compensation it last had (its own uncompensated default on a
+//  cold boot with no SHT40) - never worse than pre-existing behaviour.
+//
+//  Conversion is Sensirion's own documented approximation (SGP30 Driver
+//  Integration app note, section 3.15) from degC + %RH to absolute
+//  humidity, which setHumidity() expects in mg/m^3. A value of exactly 0
+//  would DISABLE humidity compensation entirely (Adafruit_SGP30 library
+//  behaviour) rather than error, so it's explicitly guarded against; the
+//  library's own internal cap is 256000 mg/m^3, checked here too so an
+//  implausible input is logged rather than silently failing the I2C call.
+// ============================================================
+#define SGP30_HUMIDITY_UPDATE_MS  (60UL * 1000UL)   // real humidity moves slowly - no need for 1Hz writes
+
+static void updateSGP30HumidityCompensation() {
+  if (!sht40Detected || sensorStale(lastSHT40OkMs, STALE_MED_MS)) {
+    return;
+  }
+
+  static unsigned long lastHumidityUpdateMs = 0;
+  if (millis() - lastHumidityUpdateMs < SGP30_HUMIDITY_UPDATE_MS) {
+    return;
+  }
+  lastHumidityUpdateMs = millis();
+
+  float t = temperature;   // shared global, SHT40-owned - see SCD40_CO2.h
+  float rh = humidity;     // shared global, SHT40-owned - see SCD40_CO2.h
+
+  float absHumidityGm3 = 216.7f *
+    (((rh / 100.0f) * 6.112f * expf((17.62f * t) / (243.12f + t))) / (273.15f + t));
+  uint32_t absHumidityMgm3 = (uint32_t)(absHumidityGm3 * 1000.0f);
+
+  if (absHumidityMgm3 == 0 || absHumidityMgm3 > 256000UL) {
+    debugLoop("Humidity compensation skipped - implausible result (%.2f g/m3 from %.1fC/%.1f%%RH)",
+      absHumidityGm3, t, rh);
+    debugSpecial("Humidity compensation skipped - implausible result (%.2f g/m3 from %.1fC/%.1f%%RH)",
+      absHumidityGm3, t, rh);
+    return;
+  }
+
+  bool ok = sgp30.setHumidity(absHumidityMgm3);
+  debugLoop("Humidity compensation %s -> %.2f g/m3 (from %.1fC/%.1f%%RH)",
+    ok ? "set" : "FAILED", absHumidityGm3, t, rh);
+  debugSpecial("Humidity compensation %s -> %.2f g/m3 (from %.1fC/%.1f%%RH)",
+    ok ? "set" : "FAILED", absHumidityGm3, t, rh);
+}
+
+// ============================================================
 //  LOOP - call every loop()
 // ============================================================
 void updateSGP30_VOC() {
@@ -101,6 +204,8 @@ void updateSGP30_VOC() {
   if (!sgp30Detected) {
     return;
   }
+
+  updateSGP30HumidityCompensation();
 
   // TIMING INSTRUMENTATION. IAQmeasure() is a blocking I2C call. This print
   // exists to see exactly when each attempt (success or failure) falls and
@@ -127,6 +232,22 @@ void updateSGP30_VOC() {
     lastHAPublishMs = millis();
     ha_sgp30_eco2.setValue(sgp30.eCO2);
     ha_sgp30_tvoc.setValue(sgp30.TVOC);
+
+    // Baseline pair - published unconditionally, including 0/0. 0 can never
+    // be a legitimate restored/saved value (the plausibility-range floor
+    // elsewhere in this file already enforces eCO2 >= 400), so it's an
+    // unambiguous "no baseline currently known" signal - both for a chip
+    // that's never had one, and right after an NVS reset. An earlier
+    // version gated this on != 0 to avoid publishing a "misleading" zero,
+    // but that meant a reset went silent in HA instead of showing the
+    // clear: with nothing republished, HA just kept displaying whatever it
+    // last received, making a working reset look like it had done nothing.
+    // Piggybacks on this same throttle rather than its own timer: the pair
+    // rarely changes (once at boot/reset, then hourly), so there's no
+    // benefit to publishing more often, and reusing this window means it
+    // self-heals on MQTT reconnect exactly like eCO2/TVOC above.
+    ha_sgp30_eco2_baseline.setValue(currentEco2Baseline);
+    ha_sgp30_tvoc_baseline.setValue(currentTvocBaseline);
   }
 
   debugLoop("OK -> eCO2:%u ppm | TVOC:%u ppb (blocked %lu us)", sgp30.eCO2, sgp30.TVOC, sgp30DurationUs);
@@ -175,6 +296,10 @@ void saveSGP30Baseline() {
   preferences.putUShort("eco2base", eco2Base);
   preferences.putUShort("tvocbase", tvocBase);
   preferences.end();
+
+  currentEco2Baseline = eco2Base;
+  currentTvocBaseline = tvocBase;
+
   debugLoop("Baseline saved");
   debugSpecial("Baseline saved");
 }
@@ -232,6 +357,19 @@ void restoreSGP30Baseline() {
 
   sgp30.setIAQBaseline(eco2Base, tvocBase);
   sgp30BaselineRestored = true;
+
+  // NOT published to HA here - restoreSGP30Baseline() runs during setup(),
+  // before Home Assistant MQTT is initialised (see the .ino's own "Set up
+  // all sensors BEFORE setting up Home Assistant MQTT" ordering note), so a
+  // setValue() call at this point would be published to nothing and
+  // silently dropped, with no retry, every single boot. currentEco2Baseline/
+  // currentTvocBaseline below are published from updateSGP30_VOC()'s
+  // existing periodic HA-publish window instead, which only ever runs from
+  // loop() - safely after MQTT setup - and self-heals every cycle exactly
+  // like every other entity in this app already does.
+  currentEco2Baseline = eco2Base;
+  currentTvocBaseline = tvocBase;
+
   Serial.printf("SGP30: Baseline restored -> eCO2: %u | TVOC: %u\n",
     eco2Base, tvocBase);
 }
@@ -272,6 +410,8 @@ void resetSGP30Baseline() {
   preferences.end();
 
   sgp30BaselineRestored = false;
+  currentEco2Baseline = 0;   // defensive, same reasoning as sgp30BaselineRestored above
+  currentTvocBaseline = 0;
 
   Serial.println("SGP30: Baseline cleared via long-press - restarting automatically to complete reset");
 }

@@ -58,9 +58,9 @@ HAMqtt mqtt(client, device, 35);   // raise device-type limit (default 24); 35 g
 //  extra entity is just dropped, no error, no discovery message), so this
 //  comment is the only warning a future addition gets.
 //
-//  Current count: 26   Limit: 35   Headroom: 9
-//  (3 SFA40 + 3 BME280 + 2 SHT40 + 3 SCD40 + 2 SGP30 + 6 PMS5003 weight/atm
-//   + 6 PMS5003 counts + 1 backlight)
+//  Current count: 28   Limit: 35   Headroom: 7
+//  (3 SFA40 + 3 BME280 + 2 SHT40 + 3 SCD40 + 4 SGP30 (2 live + 2 baseline)
+//   + 6 PMS5003 weight/atm + 6 PMS5003 counts + 1 backlight)
 // ============================================================
 
 // --- HA MQTT sensor entities ---
@@ -81,6 +81,8 @@ HASensorNumber ha_scd40_humidity("SCD40_Humidity", HASensorNumber::PrecisionP0);
 
 HASensorNumber ha_sgp30_eco2("SGP30_eCO2", HASensorNumber::PrecisionP0);
 HASensorNumber ha_sgp30_tvoc("SGP30_TVOC", HASensorNumber::PrecisionP0);
+HASensorNumber ha_sgp30_eco2_baseline("SGP30_eCO2_Baseline", HASensorNumber::PrecisionP0);
+HASensorNumber ha_sgp30_tvoc_baseline("SGP30_TVOC_Baseline", HASensorNumber::PrecisionP0);
 
 // PMS5003 - Weight concentration (ug/m3) Standard
 HASensorNumber ha_pms_pm10_std("PMS5003_PM10_Std", HASensorNumber::PrecisionP0);

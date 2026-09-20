@@ -1029,7 +1029,6 @@ void setupTFT() {
   // called once, at the end of setup() in the .ino, to switch over.
   drawSplashScreen();
   debugLoop("TFT initialised");
-  debugSpecial("TFT initialised");
 }
 
 // ============================================================

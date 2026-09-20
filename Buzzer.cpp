@@ -200,12 +200,10 @@ static bool readTouchEvent() {
     if (lastRawPoints != 0) {
       unsigned long heldMs = millis() - rawTouchStartMs;
       debugLoop("Raw points=%u latched for %lu ms", lastRawPoints, heldMs);
-      debugSpecial("Raw points=%u latched for %lu ms", lastRawPoints, heldMs);
     }
     if (points != 0) {
       rawTouchStartMs = millis();
       debugLoop("Raw points=%u detected", points);
-      debugSpecial("Raw points=%u detected", points);
     }
   }
   lastRawPoints = points;
@@ -226,7 +224,6 @@ static bool readTouchEvent() {
     if (!longPressFired && (millis() - touchHoldStartMs >= SGP30_RESET_HOLD_MS)) {
       longPressFired = true;
       debugLoop("Long-press detected - triggering SGP30 baseline reset");
-      debugSpecial("Long-press detected - triggering SGP30 baseline reset");
       resetSGP30Baseline();
       resetConfirmPending = true;
       rebootArmed = true;
@@ -240,7 +237,6 @@ static bool readTouchEvent() {
     if (longPressFired) {
       rebootReleaseSeen = true;
       debugLoop("Long-press touch released - reboot will proceed once tone finishes");
-      debugSpecial("Long-press touch released - reboot will proceed once tone finishes");
     }
     touchHoldStartMs = 0;
     longPressFired = false;
@@ -330,7 +326,6 @@ void loopBuzzer() {
     buzzerSnoozed = false;
     setDirtyHeader();
     debugLoop("Snooze expired");
-    debugSpecial("Snooze expired");
   }
 
   // Promote a queued confirmation tone to active as soon as no alarm
@@ -405,11 +400,9 @@ void loopBuzzer() {
 
   if (alarming && !prevAlarming) {
     debugLoop("Alarm condition ON");
-    debugSpecial("Alarm condition ON");
   }
   if (!alarming && prevAlarming) {
     debugLoop("Alarm condition OFF");
-    debugSpecial("Alarm condition OFF");
   }
   prevAlarming = alarming;
 
@@ -434,7 +427,6 @@ void loopBuzzer() {
     if (!isBacklightOn()) {
       wakeBacklight();
       debugLoop("Touch wake (display was off) - not snoozing");
-      debugSpecial("Touch wake (display was off) - not snoozing");
     }
     else if (seqActive || alarming) {
       toneOff();
@@ -443,7 +435,6 @@ void loopBuzzer() {
       snoozeUntilMs = now + BUZZER_SNOOZE_MS;
       setDirtyHeader();
       debugLoop("Snoozed for %lu min", BUZZER_SNOOZE_MINUTES);
-      debugSpecial("Snoozed for %lu min", BUZZER_SNOOZE_MINUTES);
     }
     else {
       wakeBacklight();

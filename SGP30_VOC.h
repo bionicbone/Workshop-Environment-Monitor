@@ -58,6 +58,8 @@
 
 extern HASensorNumber ha_sgp30_eco2;
 extern HASensorNumber ha_sgp30_tvoc;
+extern HASensorNumber ha_sgp30_eco2_baseline;   // raw NVS/on-chip baseline register value, not a live ppm reading
+extern HASensorNumber ha_sgp30_tvoc_baseline;   // raw NVS/on-chip baseline register value, not a live ppb reading
 
 extern bool sgp30Detected;            // true = sensor initialised at boot (optional-sensor gate)
 extern unsigned long lastSGP30OkMs;   // millis() of last good read (staleness)
